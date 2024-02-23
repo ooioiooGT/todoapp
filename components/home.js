@@ -1,12 +1,27 @@
 import { StyleSheet, View, Text, TextInput, Button, FlatList } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { FIRESTORE_DB } from '../firebaseConfig';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 
 export default function Home (){
   
   const [text, setText] = useState("");
   const [todos, setTodos] = useState([]); 
+
+  const fetchTodos = async () => {
+    const querySnapshot = await getDocs(collection(FIRESTORE_DB, "todos"));
+    const todosArray = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data() // This spreads the document's fields into the object
+    }));
+    setTodos(todosArray);
+};
+
+useEffect(() => {
+    fetchTodos();
+}, []); // Empty dependency array means this effect runs once on mount
+
+
   const addTodo = async () => {
     const newTodo = {
         value: text
@@ -34,12 +49,10 @@ export default function Home (){
       title='ADD TODO'
       onPress={addTodo}/>
 
-      <FlatList 
-      data={todos}
-      renderItem={({ item }) => (
-        <Text>{item.value}</Text>
-      )}
-        keyExtractor={item => item.id}
+      <FlatList
+        data={todos}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <Text>{item.value}</Text>}
       />
     </View>
   )
@@ -47,7 +60,8 @@ export default function Home (){
 
 const styles = StyleSheet.create({
     container: {
-        borderWidth: 3,
-        borderColor: 'black'
+        padding: 20,
+        marginVertical: 8,
+        backgroundColor: "#f9c2ff",
     },
 });
