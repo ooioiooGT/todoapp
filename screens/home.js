@@ -38,8 +38,8 @@ useEffect(() => {
   };
 
   return (
-    <View>
-      <Text>Todo List</Text>
+    <View style={styles.header}>
+      <Text style={styles.title}>Todo List</Text>
       <TextInput 
       style={styles.container}
       value={text} 
@@ -59,9 +59,22 @@ useEffect(() => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-        marginVertical: 8,
-        backgroundColor: "#f9c2ff",
-    },
+  header: {
+    paddingTop: 50, // Adjust padding top to push content down from the status bar
+    paddingBottom: 20, // Optional: Add some padding at the bottom of the header
+    backgroundColor: '#fff', // Optional: Set a background color for the header
+    width: '100%', // Ensure the header spans the entire width
+    alignItems: 'center', // This centers the title horizontally
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  container: {
+    width: '80%',
+    padding: 8,
+    marginVertical: 8,
+    backgroundColor: "#f9c2ff",
+    borderRadius: 10,
+  },
 });
