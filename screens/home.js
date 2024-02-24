@@ -1,7 +1,8 @@
-import { StyleSheet, View, Text, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import { FIRESTORE_DB } from '../firebaseConfig';
+import { FIRESTORE_DB, FIREBASE_AUTH } from '../firebaseConfig';
 import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 
 export default function Home (){
   
@@ -37,17 +38,36 @@ useEffect(() => {
         console.error("Error adding document: ", e);}
   };
 
+  // Function to sign out the user
+  const handleSignOut = async () => {
+    try {
+      await signOut(FIREBASE_AUTH);
+      console.log('User signed out successfully');
+      // Here you can navigate the user back to the login screen or perform other actions
+    } catch (error) {
+      console.error('Error signing out: ', error);
+    }
+  };
+
   return (
-    <View style={styles.header}>
-      <Text style={styles.title}>Todo List</Text>
-      <TextInput 
-      style={styles.container}
-      value={text} 
-      placeholder='Type todo list here...' 
-      onChangeText={setText}/>
-      <Button 
-      title='ADD TODO'
-      onPress={addTodo}/>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Todo List</Text>
+      </View>
+
+      <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
+        <Text style={styles.signOutButtonText}>Sign Out</Text>
+      </TouchableOpacity>
+
+      <TextInput
+        style={styles.input}
+        value={text}
+        placeholder='Type todo list here...'
+        onChangeText={setText} />
+
+      <Button
+        title='ADD TODO'
+        onPress={addTodo} />
 
       <FlatList
         data={todos}
@@ -59,22 +79,37 @@ useEffect(() => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 50,
+  },
   header: {
-    paddingTop: 50, // Adjust padding top to push content down from the status bar
-    paddingBottom: 20, // Optional: Add some padding at the bottom of the header
-    backgroundColor: '#fff', // Optional: Set a background color for the header
-    width: '100%', // Ensure the header spans the entire width
-    alignItems: 'center', // This centers the title horizontally
+    paddingBottom: 20,
+    backgroundColor: '#fff',
+    width: '100%',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
   },
-  container: {
+  input: {
     width: '80%',
     padding: 8,
     marginVertical: 8,
     backgroundColor: "#f9c2ff",
     borderRadius: 10,
+  },
+  signOutButton: {
+    position: 'absolute',
+    right: 10,
+    top: 50, // Adjust according to your app's header height
+    padding: 10,
+    backgroundColor: 'red', // Optional: Style as needed
+    borderRadius: 5,
+  },
+  signOutButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
