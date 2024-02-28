@@ -68,7 +68,6 @@ useEffect(() => {
       <Button
         title='ADD TODO'
         onPress={addTodo} />
-
       <FlatList
         data={todos}
         keyExtractor={(item) => item.id}
@@ -81,7 +80,7 @@ useEffect(() => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: '2%',
   },
   header: {
     paddingBottom: 20,
@@ -96,14 +95,17 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     padding: 8,
+    margin: 100 ,
+    justifyContent:'center',
+    alignItems:'center',
     marginVertical: 8,
-    backgroundColor: "#f9c2ff",
+    backgroundColor: "#5DADE2",
     borderRadius: 10,
   },
   signOutButton: {
     position: 'absolute',
     right: 10,
-    top: 50, // Adjust according to your app's header height
+    top: '4%', // Adjust according to your app's header height
     padding: 10,
     backgroundColor: 'red', // Optional: Style as needed
     borderRadius: 5,

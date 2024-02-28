@@ -17,7 +17,7 @@ export default function App () {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log('user', user);
+      // console.log('user', user);
       setUser(user);
     });
     // Cleanup subscription on unmount
@@ -29,7 +29,7 @@ export default function App () {
       <Stack.Navigator>
         {user ? (
           // User is logged in
-          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
         ) : (
           // No user is logged in
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
